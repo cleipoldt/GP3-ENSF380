@@ -1,5 +1,5 @@
 /**
- * @author      Parvathi Madhu <a href="mailto:parvathi.madhu@ucalgary.ca">sabrina.li1@ucalgary.ca</a>
+ * @author      Parvathi Madhu <a href="mailto:parvathi.madhu@ucalgary.ca">parvathi.madhu@ucalgary.ca</a>
  * @version     1.0
  * @since       1.0
  */
