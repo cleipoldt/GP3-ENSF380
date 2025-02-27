@@ -26,4 +26,3 @@ public class Inquirer {
         return this.INFO;
     }
 }
-
