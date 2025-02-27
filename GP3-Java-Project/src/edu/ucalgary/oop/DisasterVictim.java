@@ -6,7 +6,9 @@
 
  package edu.ucalgary.oop;
 
- public class DisasterVictim() {
+ import java.util.regex.*;
+
+ public class DisasterVictim {
     private String firstName;
     private String lastName;
     private String dateOfBirth;
@@ -24,20 +26,31 @@
     public DisasterVictim(String firstName, String ENTRY_DATE) throws IllegalArgumentException {
         this.firstName = firstName;
         
-        #FIXME validate
-        this.ENTRY_DATE = ENTRY_DATE;
-
-        #FIXME create ASSIGNED_SOCIAL_ID
+        if (isValidDateFormat(ENTRY_DATE)) {
+            this.ENTRY_DATE = ENTRY_DATE;
+        } else {
+            throw new IllegalArgumentException("ENTRY_DATE is an invalid date: " + ENTRY_DATE);
+        }
+        
+        this.ASSIGNED_SOCIAL_ID = generateSocialID();
     }
 
     public DisasterVictim(String firstName, String ENTRY_DATE, String dateOfBirth) throws IllegalArgumentException {
         this.firstName = firstName;
 
-        #FIXME validate
-        this.ENTRY_DATE = ENTRY_DATE;
-        this.dateOfBirth = dateOfBirth;
+        if (isValidDateFormat(ENTRY_DATE)) {
+            this.ENTRY_DATE = ENTRY_DATE;
+        } else {
+            throw new IllegalArgumentException("ENTRY_DATE is an invalid date: " + ENTRY_DATE);
+        }
 
-        #FIXME create ASSIGNED_SOCIAL_ID
+        if (isValidDateFormat(dateOfBirth)) {
+            this.dateOfBirth = dateOfBirth;
+        } else {
+            throw new IllegalArgumentException("dateOfBirth is an invalid date: " + dateOfBirth);
+        }
+
+        this.ASSIGNED_SOCIAL_ID = generateSocialID();
     }
 
     // getter methods
@@ -116,5 +129,23 @@
     }
 
     // static methods
+    public static int generateSocialID() {
+        // starts at 1
+        DisasterVictim.counter += 1;
+        return DisasterVictim.counter;
+    }
+
+    // must throw IllegalArgumentException where called if false
+    public static boolean isValidDateFormat(String date) {
+        Pattern validDatePattern = Pattern.compile("^\\d{4}[-]{1}\\d{2}[-]{1}\\d{2}");
+        Matcher isValid = validDatePattern.matcher(date);
+        return myMatcher.find();
+    }
+
+    public static int convertDateStringToInt(String dateStr) {
+        String numOnlyDate = dateStr.replace("-", "");
+        int dateInt = Integer.parseInt(numOnlyDate);
+        return dateInt;
+    }
 
  }
