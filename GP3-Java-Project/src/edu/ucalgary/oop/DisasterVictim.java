@@ -50,7 +50,13 @@
         }
 
         if (isValidDateFormat(dateOfBirth)) {
-            this.dateOfBirth = dateOfBirth;
+            int entryDateInt = convertDateStringToInt(ENTRY_DATE);
+            int birthDateInt = convertDateStringToInt(dateOfBirth);
+            if (birthDateInt < entryDateInt) {
+                this.dateOfBirth = dateOfBirth;
+            } else {
+                throw new IllegalArgumentException("dateOfBirth is after ENTRY_DATE");
+            }
         } else {
             throw new IllegalArgumentException("dateOfBirth is an invalid date: " + dateOfBirth);
         }
@@ -143,18 +149,24 @@
     public void addPersonalBelonging(Supply supply) {
         // FIXME: validation for if already supply of same name, add
         
-        int origLength = this.personalBelongings.length;
-        Supply[] newPersonalBelongings = Arrays.copyOf(this.personalBelongings, origLength + 1);
-        newPersonalBelongings[origLength] = supply;
-
-        this.personalBelongings = newPersonalBelongings;
+        if (this.personalBelongings != null) {
+            int origLength = this.personalBelongings.length;
+            Supply[] newPersonalBelongings = Arrays.copyOf(this.personalBelongings, origLength + 1);
+            newPersonalBelongings[origLength] = supply;
+            this.personalBelongings = newPersonalBelongings;
+        } else {
+            int origLength = 0;
+            Supply[] newPersonalBelongings = new Supply[1];
+            newPersonalBelongings[origLength] = supply;
+            this.personalBelongings = newPersonalBelongings;
+        }
     }
 
     public void removePersonalBelonging(Supply unwantedSupply) {
         // FIXME: if not there, do nothing
         // FIXME: validation for if less than what already have, subtract
 
-        // assumes unwanted supply will be fully removed
+        // assumes unwanted supply is there, will be fully removed
         int origLength = this.personalBelongings.length;
         int newIndex = 0;
         Supply[] newPersonalBelongings = new Supply[origLength - 1];
@@ -169,11 +181,17 @@
     }
 
     public void addFamilyConnection(FamilyRelation record) {
-        int origLength = this.familyConnections.length;
-        FamilyRelation[] newFamilyConnections = Arrays.copyOf(this.familyConnections, origLength + 1);
-        newFamilyConnections[origLength] = record;
-
-        this.familyConnections = newFamilyConnections;
+        if (this.familyConnections != null) {
+            int origLength = this.familyConnections.length;
+            FamilyRelation[] newFamilyConnections = Arrays.copyOf(this.familyConnections, origLength + 1);
+            newFamilyConnections[origLength] = record;
+            this.familyConnections = newFamilyConnections;
+        } else {
+            int origLength = 0;
+            FamilyRelation[] newFamilyConnections = new FamilyRelation[1];
+            newFamilyConnections[origLength] = record;
+            this.familyConnections = newFamilyConnections;
+        }
     }
 
     public void removeFamilyConnection(FamilyRelation exRelation) {
@@ -186,7 +204,6 @@
                 newIndex++;
             }
         }
-
         this.familyConnections = newFamilyConnections;
     }
 
@@ -209,7 +226,7 @@
     public static boolean isValidDateFormat(String date) {
         Pattern validDatePattern = Pattern.compile("^\\d{4}[-]{1}\\d{2}[-]{1}\\d{2}");
         Matcher isValid = validDatePattern.matcher(date);
-        return myMatcher.find();
+        return isValid.find();
     }
 
     public static int convertDateStringToInt(String dateStr) {
