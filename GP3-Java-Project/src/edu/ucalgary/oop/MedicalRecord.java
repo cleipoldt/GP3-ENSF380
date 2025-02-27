@@ -1,6 +1,6 @@
 /**
  * @author      Carl Leipoldt <a href="mailto:carl.leipoldt@ucalgary.ca">carl.leipoldt@ucalgary.ca</a>
- * @version     1.1
+ * @version     1.3
  * @since       1.0
  */
 
@@ -40,9 +40,14 @@ public class MedicalRecord {
         return this.dateOfTreatment;
     }
 
-    public void setDateOfTreatment(String dateOfTreatment){
-        this.dateOfTreatment = dateOfTreatment;
+    public void setDateOfTreatment(String dateOfTreatment)throws IllegalArgumentException {
+        if (isValidDateFormat(dateOfTreatment)) {
+            this.dateOfTreatment = dateOfTreatment;
+        } else {
+            throw new IllegalArgumentException("dateOfTreatment is an invalid date: " + dateOfTreatment);
+        }
     }
+
     private boolean isValidDateFormat(String date){
         Pattern datePat = Pattern.compile("^(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$");
         Matcher matchPat = datePat.matcher(date);
