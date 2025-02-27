@@ -8,6 +8,8 @@
 
 package edu.ucalgary.oop;
 
+import java.util.regex.*;
+
 public class ReliefService {
     private Inquirer inquirer;
     private DisasterVictim missingPerson;
@@ -15,10 +17,14 @@ public class ReliefService {
     private String infoProvided;
     private Location lastKnownLocation;
     
-    public ReliefService(Inquirer inquirer, DisasterVictim missingPerson, String dateOfInquiry, String infoProvided, Location lastKnownLocation){
+    public ReliefService(Inquirer inquirer, DisasterVictim missingPerson, String dateOfInquiry, String infoProvided, Location lastKnownLocation) throws IllegalArgumentException {
         this.inquirer = inquirer;
         this.missingPerson = missingPerson;
-        this.dateOfInquiry = dateOfInquiry;
+        if (isValidDate(dateOfInquiry)){
+            this.dateOfInquiry = dateOfInquiry;
+        } else {
+            throw new IllegalArgumentException("Invalid date format.");
+        }
         this.infoProvided = infoProvided;
         this.lastKnownLocation = lastKnownLocation;
     }
@@ -37,11 +43,12 @@ public class ReliefService {
     public String getDateOfInquiry(){
         return dateOfInquiry;
     }
-    public void setDateOfInquiry(String dateOfInquiry){
-        if (!isValidDate(dateOfInquiry)){
+    public void setDateOfInquiry(String dateOfInquiry) throws IllegalArgumentException {
+        if (isValidDate(dateOfInquiry)){
+            this.dateOfInquiry = dateOfInquiry;
+        } else {
             throw new IllegalArgumentException("Invalid date format.");
         }
-        this.dateOfInquiry = dateOfInquiry;
     }
     public String getInfoProvided(){
         return infoProvided;
@@ -58,7 +65,13 @@ public class ReliefService {
     private boolean isValidDate(String date){
         return date.matches("^\\d{4}-\\d{2}-\\d{2}$");
     }
-    public String getLogDetails(){
-        return getLogDetails();
+    
+    public String getLogDetails() {
+        String logDetails = "Inquirer: " + this.getInquirer().getFirstName() + ", " + 
+                            "Missing Person: " + this.getMissingPerson().getFirstName() + ", " + 
+                            "Date of Inquiry: " + this.getDateOfInquiry() + ", " + 
+                            "Info Provided: " + this.getInfoProvided() + ", " + 
+                            "Last Known Location: " + this.getLastKnownLocation().getName();
+        return logDetails;
     }
 }
