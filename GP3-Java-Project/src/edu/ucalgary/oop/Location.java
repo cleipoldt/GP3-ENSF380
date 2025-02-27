@@ -4,12 +4,9 @@
  * @since       1.0
  */
 
-
-
 package edu.ucalgary.oop;
 
 import java.util.Arrays;
-
 
 public class Location {
     private String name;
@@ -55,10 +52,17 @@ public class Location {
     }
 
     public void addOccupant(DisasterVictim occupant){
-        int origLength = this.occupants.length;
-        DisasterVictim[] newOccupants = Arrays.copyOf(occupants, origLength + 1);
-        newOccupants[origLength] = occupant;
-        this.occupants = newOccupants;
+        if (this.occupants != null) {
+            int origLength = this.occupants.length;
+            DisasterVictim[] newOccupants = Arrays.copyOf(this.occupants, origLength + 1);
+            newOccupants[origLength] = occupant;
+            this.occupants = newOccupants;
+        } else {
+            int origLength = 0;
+            DisasterVictim[] newOccupants = new DisasterVictim[1];
+            newOccupants[origLength] = occupant;
+            this.occupants = newOccupants;
+        }
     }
 
     public void removeOccupant(DisasterVictim occupant){
@@ -75,10 +79,17 @@ public class Location {
     }
 
     public void addSupply(Supply supply){
-        int origLength = this.supplies.length;
-        Supply[] newSupplies = Arrays.copyOf(supplies, origLength + 1);
-        newSupplies[origLength] = supply;
-        this.supplies = newSupplies;
+        if (this.supplies != null) {
+            int origLength = this.supplies.length;
+            Supply[] newSupplies = Arrays.copyOf(supplies, origLength + 1);
+            newSupplies[origLength] = supply;
+            this.supplies = newSupplies;
+        } else {
+            int origLength = 0;
+            Supply[] newSupplies = new Supply[1];
+            newSupplies[origLength] = supply;
+            this.supplies = newSupplies;
+        }
     }
 
     public void removeSupply(Supply supply){
@@ -93,5 +104,4 @@ public class Location {
         }
         this.supplies = newSupplies;
     }
-
 }
