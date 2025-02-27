@@ -58,7 +58,7 @@
         this.ASSIGNED_SOCIAL_ID = generateSocialID();
     }
 
-    // getter methods ----------------------------------
+    // getters ----------------------------------
     public String getFirstName() {
         return this.firstName;
     }
@@ -102,7 +102,7 @@
         return this.gender;
     }
 
-    // setter methods ------------------------------------------
+    // setters ------------------------------------------
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -139,12 +139,12 @@
         this.gender = gender;
     }
 
-    // methods ------------------------------------------------
+    // addders and removers ------------------------------------------------
     public void addPersonalBelonging(Supply supply) {
         // FIXME: validation for if already supply of same name, add
         
         int origLength = this.personalBelongings.length;
-        Supply[] newPersonalBelongings = Arrays.copyOf(personalBelongings, origLength + 1);
+        Supply[] newPersonalBelongings = Arrays.copyOf(this.personalBelongings, origLength + 1);
         newPersonalBelongings[origLength] = supply;
 
         this.personalBelongings = newPersonalBelongings;
@@ -164,10 +164,39 @@
                 newIndex++;
             }
         }
-        
+
         this.personalBelongings = newPersonalBelongings;
     }
 
+    public void addFamilyConnection(FamilyRelation record) {
+        int origLength = this.familyConnections.length;
+        FamilyRelation[] newFamilyConnections = Arrays.copyOf(this.familyConnections, origLength + 1);
+        newFamilyConnections[origLength] = record;
+
+        this.familyConnections = newFamilyConnections;
+    }
+
+    public void removeFamilyConnection(FamilyRelation exRelation) {
+        int origLength = this.familyConnections.length;
+        int newIndex = 0;
+        FamilyRelation[] newFamilyConnections = new FamilyRelation[origLength - 1];
+        for (int i = 0; i < origLength; i++) {
+            if (this.familyConnections[i] != exRelation) {
+                newFamilyConnections[newIndex] = this.familyConnections[i];
+                newIndex++;
+            }
+        }
+
+        this.familyConnections = newFamilyConnections;
+    }
+
+    public void addMedicalRecord(MedicalRecord record) {
+        int origLength = this.medicalRecords.length;
+        MedicalRecord[] newMedicalRecords = Arrays.copyOf(this.medicalRecords, origLength + 1);
+        newMedicalRecords[origLength] = record;
+
+        this.medicalRecords = newMedicalRecords;
+    }
 
     // static methods -------------------------------------------
     public static int generateSocialID() {
