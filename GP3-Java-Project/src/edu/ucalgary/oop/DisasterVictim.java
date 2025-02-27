@@ -6,6 +6,8 @@
 
  package edu.ucalgary.oop;
 
+ import java.util.Arrays;
+ import java.util.ArrayList;
  import java.util.regex.*;
 
  public class DisasterVictim {
@@ -16,13 +18,16 @@
     private FamilyRelation[] familyConnections;
     private MedicalRecord[] medicalRecords;
     private Supply[] personalBelongings;
+    // private ArrayList<FamilyRelation> familyConnections;
+    // private ArrayList<MedicalRecord> medicalRecords;
+    // private ArrayList<Supply> personalBelongings;
     private final String ENTRY_DATE;
     private String gender;
     private String comments;
     private static int counter;
 
     
-    // constructors
+    // constructors --------------------------------------
     public DisasterVictim(String firstName, String ENTRY_DATE) throws IllegalArgumentException {
         this.firstName = firstName;
         
@@ -53,7 +58,7 @@
         this.ASSIGNED_SOCIAL_ID = generateSocialID();
     }
 
-    // getter methods
+    // getter methods ----------------------------------
     public String getFirstName() {
         return this.firstName;
     }
@@ -72,14 +77,17 @@
 
     public FamilyRelation[] getFamilyConnections() {
         return this.familyConnections;
+        // return this.familyConnections.toArray(new FamilyRelation[familyConnections.size()]);
     }
 
     public MedicalRecord[] getMedicalRecords() {
         return this.medicalRecords;
+        // return this.medicalRecords.toArray(new MedicalRecord[medicalRecords.size()]);
     }
 
     public Supply[] getPersonalBelongings() {
         return this.personalBelongings;
+        // return this.personalBelongings.toArray(new Supply[personalBelongings.size()]);
     }
 
     public String getEntryDate() {
@@ -94,7 +102,7 @@
         return this.gender;
     }
 
-    // setter methods
+    // setter methods ------------------------------------------
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -103,13 +111,16 @@
         this.lastName = lastName;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
-        #FIXME validate
-        this.dateOfBirth = dateOfBirth;
+    public void setDateOfBirth(String dateOfBirth) throws IllegalArgumentException {
+        if (isValidDateFormat(dateOfBirth)) {
+            this.dateOfBirth = dateOfBirth;
+        } else {
+            throw new IllegalArgumentException("dateOfBirth is an invalid date: " + dateOfBirth);
+        }
     }
 
     public void setFamilyConnections(FamilyRelation[] connections) {
-        this.familyConnections = connections;
+        this.familyConnections = connections; // reference to already made FamilyRelation array
     }
 
     public void setMedicalRecords(MedicalRecord[] records) {
@@ -128,7 +139,37 @@
         this.gender = gender;
     }
 
-    // static methods
+    // methods ------------------------------------------------
+    public void addPersonalBelonging(Supply supply) {
+        // FIXME: validation for if already supply of same name, add
+        
+        int origLength = this.personalBelongings.length;
+        Supply[] newPersonalBelongings = Arrays.copyOf(personalBelongings, origLength + 1);
+        newPersonalBelongings[origLength] = supply;
+
+        this.personalBelongings = newPersonalBelongings;
+    }
+
+    public void removePersonalBelonging(Supply unwantedSupply) {
+        // FIXME: if not there, do nothing
+        // FIXME: validation for if less than what already have, subtract
+
+        // assumes unwanted supply will be fully removed
+        int origLength = this.personalBelongings.length;
+        int newIndex = 0;
+        Supply[] newPersonalBelongings = new Supply[origLength - 1];
+        for (int i = 0; i < origLength; i++) {
+            if (this.personalBelongings[i] != unwantedSupply) {
+                newPersonalBelongings[newIndex] = this.personalBelongings[i];
+                newIndex++;
+            }
+        }
+        
+        this.personalBelongings = newPersonalBelongings;
+    }
+
+
+    // static methods -------------------------------------------
     public static int generateSocialID() {
         // starts at 1
         DisasterVictim.counter += 1;
