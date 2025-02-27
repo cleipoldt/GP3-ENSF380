@@ -6,6 +6,7 @@
 
 
 package edu.ucalgary.oop;
+import java.util.regex.*;
 
 
 public class MedicalRecord {
@@ -36,11 +37,16 @@ public class MedicalRecord {
     }
 
     public String getDateOfTreatment(){
-        return this.DateOfTreatment;
+        return this.dateOfTreatment;
     }
 
     public void setDateOfTreatment(String dateOfTreatment){
         this.dateOfTreatment = dateOfTreatment;
+    }
+    private boolean isValidDateFormat(String date){
+        Pattern datePat = Pattern.compile("^(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$");
+        Matcher matchPat = datePat.matcher(date);
+        return matchPat.matches();
     }
 
 }
